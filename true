@@ -1,0 +1,34 @@
+Binary file ./var/cache/dev/profiler/03/9c/c29c03 matches
+Binary file ./var/cache/dev/profiler/bc/58/f358bc matches
+Binary file ./var/cache/dev/profiler/c0/0d/5a0dc0 matches
+Binary file ./var/cache/dev/profiler/f2/64/5364f2 matches
+Binary file ./var/cache/dev/profiler/4d/b2/5bb24d matches
+Binary file ./var/cache/dev/profiler/2a/9e/3a9e2a matches
+Binary file ./var/cache/dev/profiler/31/76/3a7631 matches
+Binary file ./var/cache/dev/profiler/3a/a1/c2a13a matches
+Binary file ./var/cache/dev/profiler/90/f9/b3f990 matches
+Binary file ./var/cache/dev/profiler/f7/5e/4a5ef7 matches
+Binary file ./var/cache/dev/profiler/f1/1b/721bf1 matches
+Binary file ./var/cache/dev/profiler/f8/20/1820f8 matches
+./vendor/symfony/form/Extension/Core/Type/CollectionType.php:        if ($options['allow_add'] && $options['prototype']) {
+./vendor/symfony/form/Extension/Core/Type/CollectionType.php:            $options['allow_add'],
+./vendor/symfony/form/Extension/Core/Type/CollectionType.php:            'allow_add' => $options['allow_add'],
+./vendor/symfony/form/Extension/Core/Type/CollectionType.php:            'allow_add' => false,
+./vendor/symfony/form/Tests/AbstractLayoutTest.php:            ->add('items', 'Symfony\Component\Form\Extension\Core\Type\CollectionType', array('allow_add' => true))
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:                'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Core/Type/CollectionTypeTest.php:            'allow_add' => true,
+./vendor/symfony/form/Tests/Extension/Csrf/Type/FormTypeCsrfExtensionTest.php:                'allow_add' => true,
