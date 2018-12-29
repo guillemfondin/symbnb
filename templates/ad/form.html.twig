@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {% if editMode %}
+    Éditer l'annonce
+    {% else %}
+    Nouvelle annonce
+    {% endif %}
+{% endblock %}
+
+{% form_theme form 'ad/_collection.html.twig' %}
+
+{% block body %}
+    {% if editMode %}
+        <h1>Éditer l'annonce</h1>
+    {% else %}
+        <h1>Nouvelle annonce</h1>
+    {% endif %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {% if editMode %}
+            <button type="submit" class="btn btn-success">Mettre à jour</button>
+        {% else %}
+            <button type="submit" class="btn btn-success">Publier</button>
+        {% endif %}
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/js/ad.js"></script>
+{% endblock %}

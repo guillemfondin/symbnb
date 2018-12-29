@@ -32,13 +32,15 @@ class AdController extends AbstractController
 
     /**
      * Permet de créer une annonce
-     * 
-     * @Route("/ads/new", name="ads_create")
+     * Affiche le formulaire d'édition
      *
+     * @Route("/ads/new", name="ads_create")
+     * @Route("/ads/{slug}/edit", name="ads_edit")
+     * 
      * @return Response
      */
-    public function create(Request $request, ObjectManager $manager) {
-        $ad = new Ad();
+    public function form(Ad $ad = null, Request $request, ObjectManager $manager) {
+        if (!$ad) $ad = new Ad();
         $form = $this->createForm(AnnonceType::class, $ad);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -56,20 +58,10 @@ class AdController extends AbstractController
                 'slug' => $ad->getSlug()
             ]);
         }
-        return $this->render('ad/new.html.twig', [
-            'form' => $form->createView()
+        return $this->render('ad/form.html.twig', [
+            'form' => $form->createView(),
+            'editMode' => $ad->getId() !== null,
         ]);
-    }
-
-    /**
-     * Affiche le formulaire d'édition
-     *
-     * @Route("/add/{slug}/edit", name=""ads_edit")
-     * 
-     * @return Response
-     */
-    public function edit() {
-        return $this->render('ad/edit.html.twig');
     }
 
     /**
