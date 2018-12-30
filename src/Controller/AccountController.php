@@ -7,12 +7,13 @@ use App\Form\AccountType;
 use App\Form\RegistrationType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Doctrine\Common\Persistence\ObjectManager;
 
 class AccountController extends AbstractController
 {
@@ -42,79 +43,88 @@ class AccountController extends AbstractController
 
     /**
      * Affiche le formulaire d'inscription
-     * Permet l'édition du profil avec affichage d'un second formualaire (AccountType)
      * 
      * @Route("/register", name="account_register")
-     * @Route("/account/profil", name="account_profil")
      *
      * @return Response
      */
     public function register(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder) {
-        if ($this->getUser()) {
-            $user = $this->getUser();
-            $passwordOld = $user->getHash();
-            $form = $this->createForm(AccountType::class, $user);
-            $modifMode = true;
-        } else {
-            $user = new User();
-            $form = $this->createForm(RegistrationType::class, $user);
-            $modifMode = false;
-        }
-        $error = false;
+        $user = new User();
+        $form = $this->createForm(RegistrationType::class, $user);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($modifMode == true) {
-                if (!empty($user->getPasswordOld()) && !empty($user->getHash()) && !empty($user->getPasswordConfirm())) {
-                    if (password_verify($user->getPasswordOld(), $passwordOld)) {
-                        $user->setHash($encoder->encodePassword($user, $user->getHash()));
-                    } else {
-                        $form->get('passwordOld')->addError(new FormError("Le mot de passe que vous avez tapé n'est pas votre mot de passe actuel"));
-                        $error = true;
-                    }
-                } else {
-                    $error = true;
-                    if (empty($user->getPasswordOld()) && !empty($user->getHash()) || !empty($user->getPasswordConfirm())) {
-                        $form->get('passwordOld')->addError(new FormError("Pour modifier le mot de passe, ce champs doit être renseigné"));
-                    }
-                    if (empty($user->getHash()) && !empty($user->getPasswordOld()) || !empty($user->getPasswordConfirm())) {
-                        $form->get('hash')->addError(new FormError("Pour modifier le mot de passe, ce champs doit être renseigné"));
-                    }
-                    if (empty($user->getPasswordConfirm()) && !empty($user->getHash()) || !empty($user->getPasswordOld())) {
-                        $form->get('passwordConfirm')->addError(new FormError("Pour modifier le mot de passe, ce champs doit être renseigné"));
-                    }
-                }
-            } else {
-                $user->setHash($encoder->encodePassword($user, $user->getHash()));
-            }
-            if (!$error) {
+            $user->setHash($encoder->encodePassword($user, $user->getHash()));
 
-                $manager->persist($user);
-                $manager->flush();
+            $manager->persist($user);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                "Votre compte a bien été créé ! Vous pouvez maintenant vous connecter"
+            );
 
-                if ($modifMode == true) {
-                    $this->addFlash(
-                        'success',
-                        "Les modifications ont bien été enregistrées"
-                    );
-
-                    return $this->redirectToRoute('account_index');
-                } else {
-                    $this->addFlash(
-                        'success',
-                        "Votre compte a bien été créé ! Vous pouvez maintenant vous connecter"
-                    );
-
-                    return $this->redirectToRoute('account_login');
-                }
-            } else {
-                $user->setHash($passwordOld);
-            }
+            return $this->redirectToRoute('account_login');
         }
 
         return $this->render('account/registration.html.twig', [
             'form' => $form->createView(),
-            'modifMode' => $modifMode
+            'modifMode' => $modifMode = null
+        ]);
+    }
+
+    /**
+     * Permet l'édition du profil avec affichage d'un second formualaire (AccountType)
+     * 
+     * @Route("/account/edit", name="account_profil")
+     * @IsGranted("ROLE_USER")
+     *
+     * @return Response
+     */
+    public function profil(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder) {
+        $user = $this->getUser();
+        $passwordOld = $user->getHash();
+        $form = $this->createForm(AccountType::class, $user);
+
+        $error = false;
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!empty($user->getPasswordOld()) && !empty($user->getHash()) && !empty($user->getPasswordConfirm())) {
+                if (password_verify($user->getPasswordOld(), $passwordOld)) {
+                    $user->setHash($encoder->encodePassword($user, $user->getHash()));
+                } else {
+                    $form->get('passwordOld')->addError(new FormError("Le mot de passe que vous avez tapé n'est pas votre mot de passe actuel"));
+                    $error = true;
+                }
+            } else {
+                $error = true;
+                if (empty($user->getPasswordOld()) && !empty($user->getHash()) || !empty($user->getPasswordConfirm())) {
+                    $form->get('passwordOld')->addError(new FormError("Pour modifier le mot de passe, ce champs doit être renseigné"));
+                }
+                if (empty($user->getHash()) && !empty($user->getPasswordOld()) || !empty($user->getPasswordConfirm())) {
+                    $form->get('hash')->addError(new FormError("Pour modifier le mot de passe, ce champs doit être renseigné"));
+                }
+                if (empty($user->getPasswordConfirm()) && !empty($user->getHash()) || !empty($user->getPasswordOld())) {
+                    $form->get('passwordConfirm')->addError(new FormError("Pour modifier le mot de passe, ce champs doit être renseigné"));
+                }
+            }
+            if (!$error) {
+                $manager->persist($user);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    "Les modifications ont bien été enregistrées"
+                );
+
+                return $this->redirectToRoute('account_index');
+            } else {
+                $user->setHash($passwordOld);
+            }
+        }
+        return $this->render('account/registration.html.twig', [
+            'form' => $form->createView(),
+            'modifMode' => $modifMode = 1
         ]);
     }
 
@@ -123,6 +133,7 @@ class AccountController extends AbstractController
      * Affiche le profil de l'utilisateur connedté
      *
      * @Route("/account", name="account_index")
+     * @IsGranted("ROLE_USER")
      * 
      * @return Response
      */
