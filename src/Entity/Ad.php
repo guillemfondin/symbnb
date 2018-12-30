@@ -73,10 +73,11 @@ class Ad
      */
     private $images;
 
-    public function __construct()
-    {
-        $this->images = new ArrayCollection();
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="ads")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
 
     /**
      * Permet d'init le slug
@@ -91,6 +92,11 @@ class Ad
             $slugify = new Slugify();
             $this->slug = $slugify->slugify($this->title);
         }
+    }
+    
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -209,6 +215,18 @@ class Ad
                 $image->setAd(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

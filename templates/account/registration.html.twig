@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    {% if modifMode %}
+        <h1>Modifier le profil</h1>
+    {% else %}
+        <h1>S'inscrire</h1>
+    {% endif %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {% if modifMode %}
+            <button type="submit" class="btn btn-success">Enregistrer</button>
+        {% else %}
+            <button type="submit" class="btn btn-success">Inscription</button>
+        {% endif %}
+    {{ form_end(form) }}
+{% endblock %}
