@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+{% block title %}Action interdite{% endblock %}
+{% block body %}
+    <h1>Alors ?! Vous essayez de bousiller le site ?!</h1>
+    <div class="alert alert-danger">
+        <p>Merci de ne pas essayer de modifier ce qui ne vous appartient pas !</p>
+    </div>
+    <a href="{{ path('ads_index') }}" class="btn btn-success">Nos annonces</a>
+    <a href="{{ path('homepage') }}" class="btn btn-primary">Retour à l'accueil</a>
+{% endblock %}

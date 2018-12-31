@@ -8,7 +8,8 @@ div.ad-title {
     background-position: center center;
 }
 
-div.ad-title h1, div.ad-title p {
+div.ad-title h1, 
+div.ad-title p {
     color: #fff;
     text-shadow: 3px 3px 3px rgba(0,0,0,0.5);
 }
@@ -31,4 +32,10 @@ div.carousel-caption {
 .avatar-mini {
     max-width: 24px;
     max-height: 24px;
+}
+
+.datepicker table tr td.disabled, 
+.datepicker table tr td.disabled:hover {
+    color: white !important;
+    background-color: rgba(247, 80, 80, 0.5) !important;
 }

@@ -10,6 +10,7 @@ use App\Entity\Image;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Entity\Booking;
 
 class AppFixtures extends Fixture
 {
@@ -74,6 +75,29 @@ class AppFixtures extends Fixture
                       ->setAd($ad)
                 ;
                 $manager->persist($image);
+            }
+            
+            //Génération des résas
+            for ($j = 1; $j <= mt_rand(0, 10); $j++) {
+                $booking = new Booking();
+
+                // $createdAt = $faker->dateTimeBetween("-6 mounths");
+                $duration = mt_rand(3,10);
+                $startDate = $faker->dateTimeBetween("-3 mounths");
+                $endDate = (clone $startDate)->modify(("+$duration days"));
+                $amount = $ad->getPrice() * $duration;
+                // $booker = $faker->randomElement($users);
+
+                $booking->setCreatedAt($faker->dateTimeBetween("-6 mounths"))
+                        ->setStartDate($startDate)
+                        ->setEndDate($endDate)
+                        ->setAmount($amount)
+                        ->setBooker($faker->randomElement($users))
+                        ->setAd($ad)
+                        ->setComment($faker->paragraph())
+                ;
+
+                $manager->persist($booking);
             }
 
             $manager->persist($ad);

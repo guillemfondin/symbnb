@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation n°{{ booking.id }}{% endblock %}
+
+{% block body %}
+
+    {% set ad = booking.ad %}
+    {% set author = booking.ad.author %}
+    <h1>Votre réservation n°{{ booking.id }}</h1>
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-light">
+                <h2>Détails</h2>
+                <dl class="row">
+                    <dt class="col-md-4">Numéro</dt>
+                    <dd class="col-md-8">{{ booking.id }}</dd>
+                    <dt class="col-md-4">Date d'arrivée</dt>
+                    <dd class="col-md-8">{{ booking.startDate | date('d/m/Y') }}</dd>
+                    <dt class="col-md-4">Date de départ</dt>
+                    <dd class="col-md-8">{{ booking.endDate | date('d/m/Y') }}</dd>                
+                    <dt class="col-md-4">Nombre de nuit</dt>
+                    <dd class="col-md-8">{{ booking.duration }}</dd>
+                    <dt class="col-md-4">Montant total</dt>
+                    <dd class="col-md-8">{{ booking.amount }}&euro;</dd>
+                    <dt class="col-md-4">Commentaire</dt>
+                    <dd class="col-md-8">{{ booking.comment }}</dd>
+                </dl>
+                <hr>
+                <h2 class="alert-heading">Votre hote</h2>
+                <div class="row mb-3">
+                    <div class="col-3">
+                        <img src="{{ author.picture }}" alt="Avatar de {{ author.fullname }}" class="avatar avatar-medium">
+                    </div>
+                    <div class="col">
+                        <h4><a href="{{ path('user_show', {'slug': author.slug }) }}">{{author.fullname}}</a></h4>
+                        <span class="badge badge-primary">{{ author.ads | length }} annonces</span>
+                    </div>
+                </div>
+                {{ author.description | raw }}
+                <a href="{{ path('user_show', {'slug': author.slug }) }}" class="btn btn-primary">Plus d'infos sur {{ author.firstname }}</a>
+            </div>
+        </div>
+        <div class="col">
+            <div class="alert alert-light">
+                <h2 class="alert-headeing">Votre hébergement</h2>
+                <h4><a href="{{ path('ads_show', {'slug' : ad.slug }) }}">{{ ad.title }}</a></h4>
+                <img src="{{ ad.coverImage }}" alt="Image de {{ ad.title }}" class="img-fluid">
+                {{ ad.content | raw }}
+                <a href="{{ path('ads_show', {'slug': ad.slug }) }}" class="btn btn-primary">Plus d'informations</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
