@@ -49,6 +49,36 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
+            <hr>
+            {% if ad.comments | length > 0 %}
+                <h2 class="mb-3">Commentaires des anciens locataires</h2>
+                <div class="alert alert-info">
+                    <h4 class="alert-heading text-center">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                Note globale
+                            </div>
+                            <div class="col">
+                                {% include 'booking/_rating.html.twig' with {'rating': ad.avgRatings} %}<br>
+                                <small>Calculée sur {{ ad.comments | length }} avis</small>
+                            </div>
+                        </div>
+                    </h4>
+                </div>
+                {% for comment in ad.comments %}
+                    <div class="bg-light rounded mb-3 p-3">
+                        <strong>{{ comment.author.fullname }}</strong> :
+                        <br>
+                        {% include 'booking/_rating.html.twig' with {'rating': comment.rating} %}
+                        <blockquote>{{ comment.content }}</blockquote>
+                        <p>le {{ comment.createdAt | date('d/m/Y') }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-secondary">
+                    <h2>Cette annonce ne possède pas de commentaires</h2>
+                </div>
+            {% endif %}
         </div>
         <div class="col">
             {% set a = ad.author %}

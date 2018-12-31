@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
@@ -85,6 +86,11 @@ class Ad
     private $bookings;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="ad", orphanRemoval=true)
+     */
+    private $comments;
+
+    /**
      * Permet d'init le slug
      * 
      * @ORM\PrePersist
@@ -97,6 +103,45 @@ class Ad
             $slugify = new Slugify();
             $this->slug = $slugify->slugify($this->title);
         }
+    }
+
+    /**
+     * Retourne le commentaire laissé par l'auteur par rapport à une annonce
+     *
+     * @param User $author
+     * @return Comment|null
+     */
+    public function getCommentFromAuthor(User $author) {
+        foreach ($this->comments as $comment) {
+            if ($comment->getAuthor() === $author) return $comment;
+        }
+        return null;
+    }
+
+    // *
+    //  * Retourne le commentaire laissé par l'auteur par rapport à une annonce
+    //  *
+    //  * @param Booking $booking
+    //  * @return Comment|null
+    //  *
+    // public function getCommentByAd(Booking $booking) {
+    //     foreach ($this->comments as $comment) {
+    //         if ($comment->getId() === $booking) return $comment;
+    //     }
+    //     return null;
+    // }
+
+    /**
+     * Retourne la moyenne des notes pour une annonce arrondie à l'entier
+     *
+     * @return int
+     */
+    public function getAvgRatings() {
+        $sum = array_reduce($this->comments->toArray(), function($total, $comment) {
+            return $total + $comment->getRating();
+        }, 0);
+        if (count($this->comments) > 0) return intval($sum / count($this->comments));
+        return 0;
     }
 
     /**
@@ -126,6 +171,7 @@ class Ad
     {
         $this->images = new ArrayCollection();
         $this->bookings = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -285,6 +331,37 @@ class Ad
             // set the owning side to null (unless already changed)
             if ($booking->getAd() === $this) {
                 $booking->setAd(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setAd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getAd() === $this) {
+                $comment->setAd(null);
             }
         }
 

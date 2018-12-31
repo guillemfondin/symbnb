@@ -11,6 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Faker\Provider\cs_CZ\DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
+use App\Entity\Comment;
+use App\Form\CommentType;
 
 class BookingController extends AbstractController
 {
@@ -61,11 +63,32 @@ class BookingController extends AbstractController
      * @Route("/booking/{id}", name="booking_show")
      * 
      * @param Booking $booking
+     * @param Request $request
+     * @param ObjectManager $manager
      * @return Response
      */
-    public function show(Booking $booking) {
+    public function show(Booking $booking, Request $request, ObjectManager $manager) {
+        $comment = new Comment();
+
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setAd($booking->getAd())
+                    ->setAuthor($this->getUser())
+            ;
+            $manager->persist($comment);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "<h2>Merci pour votre précieux avis !</h2><p>Votre commentaire a bien été enregistré</p>"
+            );
+        }
+
         return $this->render('booking/show.html.twig', [
-            'booking' => $booking
+            'booking' => $booking,
+            'form' => $form->createView()
         ]);
     }
 }

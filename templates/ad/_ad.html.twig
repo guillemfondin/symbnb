@@ -3,7 +3,11 @@
     <div class="card bg-light mb-3">
         <div class="card-header text-center">
             {{ ad.rooms }} chambres, <strong>{{ ad.price }}&euro; / nuit</strong><br>
-            <small>Pas encore noté</small>
+            {% if ad.comments | length > 0 %}
+                {% include 'booking/_rating.html.twig' with {'rating': ad.avgRatings} %}
+            {% else %}
+                <small>Pas encore noté</small>
+            {% endif %}
         </div>
         <a href="{{ url }}">
             <img src="{{ ad.coverImage }}" alt="Image {{ ad.title }}" style="height: 200px; width: 100%; display: block;">
