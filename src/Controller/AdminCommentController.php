@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Service\Paginator;
 use App\Form\AdminCommentType;
 use App\Repository\CommentRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,15 +16,18 @@ class AdminCommentController extends AbstractController
     /**
      * Affiche la liste de tous les commentaires
      * 
-     * @Route("/admin/comments", name="admin_comments_index")
+     * @Route("/admin/comments/{page<\d+>?1}", name="admin_comments_index")
      * 
      * @param CommentRepository $repo
      * @return Response
      */
-    public function index(CommentRepository $repo)
+    public function index(CommentRepository $repo, $page, Paginator $paginator)
     {
+        $paginator->setEntityClass(Comment::class)
+                  ->setCurrentPage($page)
+        ;
         return $this->render('admin/comment/index.html.twig', [
-            'comments' => $repo->findAll()
+            'pagination' => $paginator
         ]);
     }
 

@@ -9,21 +9,27 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
+use App\Service\Paginator;
 
 class AdminAdController extends AbstractController
 {
     /**
      * Affiche l'ensemble des annonces
      * 
-     * @Route("/admin/ads", name="admin_ads_index")
+     * @Route("/admin/ads/{page<\d+>?1}", name="admin_ads_index")
      * 
      * @param AdRepository $AdRepository
+     * @param int $page
      * @return Response
      */
-    public function index(AdRepository $repo)
+    public function index(AdRepository $repo, $page, Paginator $paginator)
     {
+        $paginator->setEntityClass(Ad::class)
+                  ->setCurrentPage($page)
+        ;
+
         return $this->render('admin/ad/index.html.twig', [
-            'ads' => $repo->findAll(),
+            'pagination' => $paginator,
         ]);
     }
 

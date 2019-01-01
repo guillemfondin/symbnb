@@ -3,37 +3,38 @@
 {% block title %}Admin - Réservations{% endblock %}
 
 {% block body %}
-<h1>Gestion des réservations</h1>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Date</th>
-            <th>Locataire</th>
-            <th>Annonce</th>
-            <th>Durée</th>
-            <th>Montant</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for booking in bookings %}
+    <h1>Gestion des réservations</h1>
+    <table class="table table-hover">
+        <thead>
             <tr>
-                <td>{{ booking.id }}</td>
-                <td>{{ booking.createdAt | date('d/m/Y H:i') }}</td>
-                <td>
-                    <img src="{{ booking.booker.picture }}" alt="avatar de {{ booking.booker.fullname }}" class="avatar avatar-mini">
-                    &nbsp;
-                    {{ booking.booker.fullname }}</td>
-                <td>{{ booking.ad.title }}</td>
-                <td>{{ booking.duration }}</td>
-                <td>{{ booking.amount }}&euro;</td>
-                <td>
-                    <a href="{{ path('admin_bookings_edit', {'id': booking.id }) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                    <a href="{{ path('admin_bookings_delete', {'id': booking.id }) }}" class="btn btn-danger" onclick="return confirm(`Êtes vous sûr de vouloir supprimer la réservation ?`)"><i class="fas fa-trash"></i></a>
-                </td>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Locataire</th>
+                <th>Annonce</th>
+                <th>Durée</th>
+                <th>Montant</th>
+                <th>Action</th>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% for booking in pagination.data %}
+                <tr>
+                    <td>{{ booking.id }}</td>
+                    <td>{{ booking.createdAt | date('d/m/Y H:i') }}</td>
+                    <td>
+                        <img src="{{ booking.booker.picture }}" alt="avatar de {{ booking.booker.fullname }}" class="avatar avatar-mini">
+                        &nbsp;
+                        {{ booking.booker.fullname }}</td>
+                    <td>{{ booking.ad.title }}</td>
+                    <td>{{ booking.duration }}</td>
+                    <td>{{ booking.amount }}&euro;</td>
+                    <td>
+                        <a href="{{ path('admin_bookings_edit', {'id': booking.id }) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                        <a href="{{ path('admin_bookings_delete', {'id': booking.id }) }}" class="btn btn-danger" onclick="return confirm(`Êtes vous sûr de vouloir supprimer la réservation ?`)"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ pagination.display() }}
 {% endblock %}

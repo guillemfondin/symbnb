@@ -9,21 +9,25 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\AdminBookingType;
+use App\Service\Paginator;
 
 class AdminBookingController extends AbstractController
 {
     /**
      * Affiche la liste des réservations
      * 
-     * @Route("/admin/bookings", name="admin_bookings_index")
+     * @Route("/admin/bookings/{page<\d+>?1}", name="admin_bookings_index")
      * 
      * @param BookingRepository $repo
      * 
      * @return Response
      */
-    public function index(BookingRepository $repo) {
+    public function index(BookingRepository $repo, $page, Paginator $paginator) {
+        $paginator->setEntityClass(Booking::class)
+                  ->setCurrentPage($page)
+        ;
         return $this->render('admin/booking/index.html.twig', [
-            'bookings' => $repo->findAll()
+            'pagination' => $paginator
         ]);
     }
 
