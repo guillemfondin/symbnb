@@ -21,7 +21,7 @@
                     <dt class="col-md-4">Nombre de nuit</dt>
                     <dd class="col-md-8">{{ booking.duration }}</dd>
                     <dt class="col-md-4">Montant total</dt>
-                    <dd class="col-md-8">{{ booking.amount }}&euro;</dd>
+                    <dd class="col-md-8">{{ booking.amount | number_format(2, ',', ' ') }}&euro;</dd>
                     <dt class="col-md-4">Commentaire</dt>
                     <dd class="col-md-8">{{ booking.comment | default('Pas de commentaire') }}</dd>
                 </dl>
@@ -39,10 +39,10 @@
                 {{ author.description | raw }}
                 <a href="{{ path('user_show', {'slug': author.slug }) }}" class="btn btn-primary">Plus d'infos sur {{ author.firstname }}</a>
             </div>
-            <div class="alert alert-light">
+            <div class="alert alert-light" id="comment">
                 <h2 class="alert-heading">Votre avis compte !</h2>
                 {% if date() > date(booking.endDate) %}
-                    {% set comment = booking.ad.commentFromAuthor(app.user) %}
+                    {% set comment = booking.ad.commentByBooking(booking) %}
                     {% if comment is not null %}
                         {% include 'booking/_rating.html.twig' with {'rating': comment.rating} %}
                         <blockquote>{{ comment.content }}</blockquote>

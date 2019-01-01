@@ -1,0 +1,19 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Admin - Commentaires{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Édition d'un commentaire</h1>
+        <div class="alert alert-info">
+            <p><strong>Annonce liée : </strong>{{ comment.ad.title }} </p>
+            <p><strong>Auteur : </strong>{{ comment.author.fullname }} </p>
+            <p><strong>Date de création : </strong>{{ comment.createdAt | date('d/m/Y H:i') }} </p>
+            <p><strong>Note donnée : </strong>{{ comment.rating }} </p>
+        </div>
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

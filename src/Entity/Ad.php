@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Entity\User;
+use App\Entity\Booking;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
@@ -108,28 +108,16 @@ class Ad
     /**
      * Retourne le commentaire laissé par l'auteur par rapport à une annonce
      *
-     * @param User $author
+     * @param Booking $booking
      * @return Comment|null
      */
-    public function getCommentFromAuthor(User $author) {
+    public function getCommentByBooking(Booking $booking) {
         foreach ($this->comments as $comment) {
-            if ($comment->getAuthor() === $author) return $comment;
+            if ($comment->getBooking() === $booking) return $comment;
+            dump($booking);
         }
         return null;
     }
-
-    // *
-    //  * Retourne le commentaire laissé par l'auteur par rapport à une annonce
-    //  *
-    //  * @param Booking $booking
-    //  * @return Comment|null
-    //  *
-    // public function getCommentByAd(Booking $booking) {
-    //     foreach ($this->comments as $comment) {
-    //         if ($comment->getId() === $booking) return $comment;
-    //     }
-    //     return null;
-    // }
 
     /**
      * Retourne la moyenne des notes pour une annonce arrondie à l'entier

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Connexion à l'admin</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/litera/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="col-md-4">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h4 class="card-title">
+                    <i class="fas fa-lock"></i>
+                    Connexion à l'administration
+                </h4>
+            </div>
+            <div class="card-body">
+                {% if hasError %}
+                    <div class="alert alert-warning">
+                        <p>Les informations fournies sont incorrect</p>
+                    </div>
+                {% endif %}
+                <form method="post">
+                    <div class="form-group">
+                        <label for="username">Email</label>
+                        <input type="text" class="form-control" name="_username" id="username" value="{{ username }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" class="form-control" name="_password" id="password" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-open"></i>&nbsp;Connexion</button>
+                        <a href="{{ path('homepage') }}" class="btn btn-link"><i class="fas fa-arrow-circle-left"></i>&nbsp;Retour au site</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

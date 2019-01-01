@@ -103,9 +103,10 @@ class AppFixtures extends Fixture
                 if (mt_rand(0, 1)) {
                     $comment = new Comment();
                     $comment->setContent($faker->paragraph())
-                            ->setRating(mt_rand(1, 5))
+                            ->setRating(mt_rand(0, 5))
                             ->setAd($ad)
                             ->setAuthor($booker)
+                            ->setBooking($booking)
                     ;
                     $manager->persist($comment);
                 }

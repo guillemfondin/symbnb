@@ -33,7 +33,7 @@ class Booking
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Date(message="Attention la date doit être au bon format")
-     * @Assert\GreaterThan("today", message="La date d'arrivée doit être supérieur à la date d'aujourd'hui")
+     * @Assert\GreaterThan("today", message="La date d'arrivée doit être supérieur à la date d'aujourd'hui", groups={"front"})
      */
     private $startDate;
 
@@ -60,9 +60,15 @@ class Booking
     private $comment;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Comment", mappedBy="booking", cascade={"persist", "remove"})
+     */
+    private $avis;
+
+    /**
      * Renseigne automatiquement la date de création et le prix total
      * 
      * @ORM\PrePersist
+     * @ORM\PreUpdate
      *
      * @return void
      */
@@ -205,6 +211,24 @@ class Booking
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getAvis(): ?Comment
+    {
+        return $this->avis;
+    }
+
+    public function setAvis(?Comment $avis): self
+    {
+        $this->avis = $avis;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newBooking = $avis === null ? null : $this;
+        if ($newBooking !== $avis->getBooking()) {
+            $avis->setBooking($newBooking);
+        }
 
         return $this;
     }

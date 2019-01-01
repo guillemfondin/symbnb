@@ -44,6 +44,11 @@ class Comment
      */
     private $author;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Booking", inversedBy="avis", cascade={"persist", "remove"})
+     */
+    private $booking;
+
 
     /**
      * Renseigne automatiquement la date de création
@@ -119,6 +124,18 @@ class Comment
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getBooking(): ?Booking
+    {
+        return $this->booking;
+    }
+
+    public function setBooking(?Booking $booking): self
+    {
+        $this->booking = $booking;
 
         return $this;
     }

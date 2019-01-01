@@ -1,0 +1,21 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Admin - Édition d'une réservations{% endblock %}
+
+{% block body %}
+    <h1>Modifier la réservation n°{{ booking.id }}</h1>
+    {{ form_start(form) }}
+        <div class="row">
+            <div class="col">
+                {{ form_row(form.startDate) }}
+                {{ form_row(form.endDate) }}
+                {{ form_row(form.comment) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.booker) }}
+                {{ form_row(form.ad) }}
+                <button type="submit" class="btn btn-success"><i class="fas fa-check"></i>Enregistrer les modifications</button>
+            </div>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

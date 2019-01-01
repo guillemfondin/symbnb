@@ -2,7 +2,7 @@
 <div class="col-md-4">
     <div class="card bg-light mb-3">
         <div class="card-header text-center">
-            {{ ad.rooms }} chambres, <strong>{{ ad.price }}&euro; / nuit</strong><br>
+            {{ ad.rooms }} pièce{% if ad.rooms > 1 %}s{% endif %}, <strong>{{ ad.price | number_format(2, ',', ' ') }}&euro; / nuit</strong><br>
             {% if ad.comments | length > 0 %}
                 {% include 'booking/_rating.html.twig' with {'rating': ad.avgRatings} %}
             {% else %}
@@ -19,7 +19,7 @@
             <p class="card-text">
                 {{ ad.introduction }}
             </p>
-            <a href="{{ url }}" class="btn btn-info">Voir plus</a>
+            <a href="{{ url }}" class="btn btn-info float-right">Voir plus</a>
             {% if app.user and app.user == ad.author %}
                <a href="{{ path('ads_edit', {'slug': ad.slug }) }}" class="btn btn-secondary">Modifier</a>
             {% endif %}

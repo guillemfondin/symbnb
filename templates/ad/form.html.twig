@@ -17,12 +17,45 @@
         <h1>Nouvelle annonce</h1>
     {% endif %}
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        {% if editMode %}
-            <button type="submit" class="btn btn-success">Mettre à jour</button>
-        {% else %}
-            <button type="submit" class="btn btn-success">Publier</button>
-        {% endif %}
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-light">
+                    <h2>Informations générales</h2>
+                    <hr>
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.slug) }}
+                    {{ form_row(form.price) }}
+                    {{ form_row(form.rooms) }}
+                </div>
+                <div class="alert alert-light">
+                    <h2>Détails de l'annonce</h2>
+                    <hr>
+                    {{ form_row(form.introduction) }}
+                    {{ form_row(form.content) }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="alert alert-light">
+                    <h2>Images de l'annonce</h2>
+                    <hr>
+                    {{ form_row(form.coverImage) }}
+                    {{ form_row(form.images) }}
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-success clearfix">
+            <h2 class="alert-heading">Publier l'annonce</h2>
+            <p>Vous êtes sur le point de publier votre annonce, nous sommes fière de vous</p>
+            {% if editMode %}
+                <button type="submit" class="btn btn-primary float-right">
+                    <i class="fas fa-check"></i>&nbsp;Mettre à jour
+                </button>
+            {% else %}
+                <button type="submit" class="btn btn-primary float-right">
+                    <i class="fas fa-check"></i>&nbsp;Publier
+                </button>
+            {% endif %}
+        </div>
     {{ form_end(form) }}
 {% endblock %}
 

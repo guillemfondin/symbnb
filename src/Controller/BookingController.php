@@ -17,6 +17,8 @@ use App\Form\CommentType;
 class BookingController extends AbstractController
 {
     /**
+     * Permet la réservation d'une location
+     * 
      * @Route("/ads/{slug}/book", name="booking_create")
      * @IsGranted("ROLE_USER")
      */
@@ -76,6 +78,7 @@ class BookingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setAd($booking->getAd())
                     ->setAuthor($this->getUser())
+                    ->setBooking($booking)
             ;
             $manager->persist($comment);
             $manager->flush();

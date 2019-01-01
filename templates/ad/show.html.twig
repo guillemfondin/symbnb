@@ -10,12 +10,12 @@
         <h1>{{ ad.title }}</h1>
         <p>{{ ad.introduction }}</p>
         <p class="h2">
-            <strong>{{ ad.rooms }} pièces</strong> pour <strong>{{ ad.price }}&euro;</strong> / nuit
+            <strong>{{ ad.rooms }} pièces</strong> pour <strong>{{ ad.price | number_format(2, ',', ' ') }}&euro;</strong> / nuit
         </p>
         <a href="{{ path('booking_create', {'slug': ad.slug}) }}" class="btn btn-primary">Réserver</a>
         {% if app.user and app.user == ad.author %}
             <a href="{{ path('ads_edit', {'slug': ad.slug }) }}" class="btn btn-secondary">Modifier</a>
-            <a href="{{ path('ads_delete', {'slug': ad.slug }) }}" class="btn btn-danger" onClick="return confirm(`Êtes vous sûr de vouloir supprimer la pgae ?`)">Supprimer</a>
+            <a href="{{ path('ads_delete', {'slug': ad.slug }) }}" class="btn btn-danger" onClick="return confirm(`Êtes vous sûr de vouloir supprimer l'annonce ?`)">Supprimer</a>
         {% endif %}
     </div>
 </div>

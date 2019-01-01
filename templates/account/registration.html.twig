@@ -9,11 +9,43 @@
         <h1>S'inscrire</h1>
     {% endif %}
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        {% if modifMode %}
-            <button type="submit" class="btn btn-success">Enregistrer</button>
-        {% else %}
-            <button type="submit" class="btn btn-success">Inscription</button>
-        {% endif %}
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-light">
+                    <h2 class="alert-heading">Informations générales</h2>
+                    <hr>
+                    {{ form_row(form.picture) }}
+                    {% if modifMode %}
+                        {{ form_row(form.passwordOld) }}
+                    {% else %}
+                        {{ form_row(form.firstName) }}
+                        {{ form_row(form.lastName) }}
+                        {{ form_row(form.email) }}
+                    {% endif %}
+                    {{ form_row(form.hash) }}
+                    {{ form_row(form.passwordConfirm) }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="alert alert-light">
+                    <h2 class="alert-heading">Détails</h2>
+                    <hr>
+                    {{ form_row(form.introduction) }}
+                    {{ form_row(form.description) }}
+                    <hr>
+                    {% if modifMode %}
+                        <p>Si vous avez terminé vos modifications, vous pouvez sauvegarder</p>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check"></i>&nbsp;Enregistrer
+                        </button>
+                    {% else %}
+                        <p>Si vous avez bien renseigné toutes vos informatios, vous pouvez vous cliquer sur le bouton ci-dessous</p>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check"></i>&nbsp;Inscription
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     {{ form_end(form) }}
 {% endblock %}

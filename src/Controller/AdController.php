@@ -93,7 +93,7 @@ class AdController extends AbstractController
      * 
      * @return Response
      */
-    public function create(Ad $ad, Request $request, ObjectManager $manager) {
+    public function edit(Ad $ad, Request $request, ObjectManager $manager) {
         return $this->validator($ad, $request, $manager, 'modifiée');
         // return $this->render('ad/form.html.twig', [
         //     'form' => $form->createView(),
