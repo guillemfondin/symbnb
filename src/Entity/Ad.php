@@ -108,6 +108,9 @@ class Ad
             $slugify = new Slugify();
             $this->slug = $slugify->slugify($this->title);
         }
+        if (empty($this->createdAt)) {
+            $this->createdAt = new \DateTime();
+        }
     }
 
     /**

@@ -67,6 +67,7 @@ class AppFixtures extends Fixture
                ->setPrice(mt_rand(40,200))
                ->setRooms(mt_rand(1,7))
                ->setAuthor($faker->randomElement($users))
+            //    ->setCreatedAt(new \Datet)
             ;
 
             for ($j = 1; $j <= mt_rand(2, 5); $j++) {
