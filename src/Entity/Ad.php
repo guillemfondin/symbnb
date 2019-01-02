@@ -91,11 +91,6 @@ class Ad
     private $comments;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $createdAt;
-
-    /**
      * Permet d'init le slug
      * 
      * @ORM\PrePersist
@@ -107,9 +102,6 @@ class Ad
         if (empty($this->slug)) {
             $slugify = new Slugify();
             $this->slug = $slugify->slugify($this->title);
-        }
-        if (empty($this->createdAt)) {
-            $this->createdAt = new \DateTime();
         }
     }
 
@@ -360,18 +352,6 @@ class Ad
                 $comment->setAd(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }
